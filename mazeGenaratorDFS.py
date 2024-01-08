@@ -153,18 +153,21 @@ def drawMazeFinal():
 def generate_maze():
     current = grid[0]
     current.visitedGrid()
-    queue = []
-    queue.append(current)
-    while len(queue) > 0:
-        current = queue.pop(0)
+    stack = []
+    stack.append(current)
+    while len(stack) > 0:
+        current = stack.pop()
         current.visitedGrid()
-        neighbors = current.checkNeighbors()
-        if len(neighbors) > 0:
-            queue.append(current)
-            next = random.choice(neighbors)
-            next.visitedGrid()
-            queue.append(next)
-            current.removeWalls(next)
+        next = current.checkNeighbors()
+        if len(next) > 0:
+            stack.append(current)
+            index = random.randint(0,len(next)-1)
+            nextCell = next[index]
+            nextCell.visitedGrid()
+            current.removeWalls(nextCell)
+            stack.append(nextCell)
+        drawGrid()
+        pygame.display.flip()
     drawMazeFinal()
     pygame.display.flip()
 
